@@ -47,8 +47,10 @@ class User extends Authenticatable
         ];
     }
 
-    // public function notes()
-    // {
-    //     return $this-HasMany()
-    // }
+    //defines the relation to the note model from the user model
+    public function linkToNotes(){
+        return $this->hasMany(notes::class);
+    }
+
+
 }
