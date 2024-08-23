@@ -13,17 +13,16 @@ class AuthenticationController extends Controller
     {
         $fields = $request->validate([
             'username' => 'required|max:100',
-            'password'=> 'required|confirmed',
+            'password'=> 'required',
         ]);
 
         $user = User::create($fields);
+
         $token = $user->createToken($request->username);
-        $karlos = "dasda";
-        return [
-            'user' => $user,
-            'token' => $token->plainTextToken
-        ];
+
+        return response()->json(['message' => 'User registered successfully!'], 201);
     }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -45,6 +44,7 @@ class AuthenticationController extends Controller
             'token' => $token->plainTextToken
         ];
     }
+
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
