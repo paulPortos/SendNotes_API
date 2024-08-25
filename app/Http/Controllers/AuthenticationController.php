@@ -16,11 +16,10 @@ class AuthenticationController extends Controller
             'password'=> 'required',
         ]);
 
-        $user = User::create($fields);
+         User::create($fields);
 
-        $token = $user->createToken($request->username);
 
-        return response()->json(['message' => 'User registered successfully!'], 201);
+        return ['message' => 'User registered successfully!'];
     }
 
     public function login(Request $request)

@@ -18,18 +18,20 @@ class NotesController extends Controller implements HasMiddleware
         ];
     }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource on the loged in user.
      */
-    public function index(notes $note)
+    public function index(Request $request)
     {
        
-       $note ->notes::all();
-       Gate::authorize('modify',$note);
+       $user = $request->User();
+       $notes = notes::where('user_id', $user->id)->get();
+
+       return $notes;
        
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage on the loged in user.
      */
     public function store(Request $request)
     {
@@ -37,21 +39,24 @@ class NotesController extends Controller implements HasMiddleware
             'title' => 'Required|string|max:100',
             'contents' => 'required|string'
         ]);
-        $notes = $request ->user()->linkToNotes()->create($fields);
+        $notes = $request ->User()->linkToNotes()->create($fields);
+
+        return $notes;
+    }
+
+    
+     //Display the specified resource on the loged in user.
+     
+    public function show(Request $request)
+    {
+        $user = $request->User();
+        $notes = notes::where('user_id', $user->id)->get();
 
         return $notes;
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(notes $note)
-    {
-       return $note;
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage on the loged in user.
      */
     public function update(Request $request, notes $note)
     {
@@ -65,7 +70,7 @@ class NotesController extends Controller implements HasMiddleware
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource from storage on the loged in user..
      */
     public function destroy(notes $note)
     {
