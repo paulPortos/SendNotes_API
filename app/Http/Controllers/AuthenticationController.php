@@ -21,8 +21,9 @@ class AuthenticationController extends Controller
 
         return ['message' => 'User registered successfully!'];
     }
-
-    public function login(Request $request)
+    //old login
+/*
+public function login(Request $request)
     {
         $request->validate([
             'username' => 'required|exists:users',
@@ -43,6 +44,43 @@ class AuthenticationController extends Controller
             'token' => $token->plainTextToken
         ];
     }
+*/
+
+
+    public function login(Request $request)
+{
+    $request->validate([
+        /*
+        manually shows error if the user does not exist in the database
+        'username' => 'required|exists:users'
+        */ 
+        //does not manually show error messages if the user does not exist in the database
+        'username' => 'required',
+        'password' => 'required',
+    ]);
+
+    $user = User::where('username', $request->username)->first();
+
+    //manually validates if the user does not exit in your database
+    if (!$user){
+        return response()->json([
+            'error'=> 'user not found, Please check your usernmae'
+        ],201);
+    }
+    //manually validates if the username exist but the password is wrong
+    if(!Hash::check($request ->password,$user->password)){
+        return response()->json([
+            'message'=>'Wrong password, Please try again'
+        ],201);
+    }
+    
+    $token = $user->createToken($request->username);
+
+    return [
+        'user' => $user,
+        'token' => $token->plainTextToken
+    ];
+}   
 
     public function logout(Request $request)
     {
