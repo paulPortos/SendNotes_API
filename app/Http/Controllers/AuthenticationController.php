@@ -12,10 +12,18 @@ class AuthenticationController extends Controller
     public function register(Request $request)
     {
         $fields = $request->validate([
-            'username' => 'required|max:100|Unique:users',
+            'username' => 'required|max:100',
             'password'=> 'required',
         ]);
 
+
+        $user = User::where('username',$fields['username'])->first();
+
+        if($user){
+            return response()->json([
+                'error'=> 'username already exist. Try another username'
+            ],201);
+        }
          User::create($fields);
 
 
@@ -56,7 +64,7 @@ public function login(Request $request)
         */ 
         //does not manually show error messages if the user does not exist in the database
         'username' => 'required',
-        'password' => 'required',
+        'password' => 'required'
     ]);
 
     $user = User::where('username', $request->username)->first();
@@ -64,14 +72,14 @@ public function login(Request $request)
     //manually validates if the user does not exit in your database
     if (!$user){
         return response()->json([
-            'error'=> 'user not found, Please check your usernmae'
+            'error'=> 'user not found, Please check your username'
         ],201);
     }
     //manually validates if the username exist but the password is wrong
     if(!Hash::check($request ->password,$user->password)){
         return response()->json([
             'message'=>'Wrong password, Please try again'
-        ],201);
+        ],202);
     }
     
     $token = $user->createToken($request->username);
