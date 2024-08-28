@@ -22,7 +22,7 @@ class AuthenticationController extends Controller
         if($user){
             return response()->json([
                 'error'=> 'username already exist. Try another username'
-            ],201);
+            ],202);
         }
          User::create($fields);
 
@@ -61,7 +61,7 @@ public function login(Request $request)
         /*
         manually shows error if the user does not exist in the database
         'username' => 'required|exists:users'
-        */ 
+        */
         //does not manually show error messages if the user does not exist in the database
         'username' => 'required',
         'password' => 'required'
@@ -79,16 +79,16 @@ public function login(Request $request)
     if(!Hash::check($request ->password,$user->password)){
         return response()->json([
             'message'=>'Wrong password, Please try again'
-        ],202);
+        ],201);
     }
-    
+
     $token = $user->createToken($request->username);
 
     return [
         'user' => $user,
         'token' => $token->plainTextToken
     ];
-}   
+}
 
     public function logout(Request $request)
     {
