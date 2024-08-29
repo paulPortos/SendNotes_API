@@ -19,7 +19,6 @@ class FlashcardsController extends Controller implements HasMiddleware
     }
 
     public function index(Request $request){
-
         $user = $request->User();
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
