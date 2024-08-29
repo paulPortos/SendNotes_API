@@ -22,12 +22,12 @@ class NotesController extends Controller implements HasMiddleware
      */
     public function index(Request $request)
     {
-       
+
        $user = $request->User();
        $notes = notes::where('user_id', $user->id)->get();
 
        return $notes;
-       
+
     }
 
     /**
@@ -36,7 +36,7 @@ class NotesController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $fields = $request -> validate([
-            'title' => 'Required|string|max:100',
+            'title' => 'required|string|max:100',
             'contents' => 'required|string'
         ]);
         $notes = $request ->User()->linkToNotes()->create($fields);
@@ -44,9 +44,9 @@ class NotesController extends Controller implements HasMiddleware
         return $notes;
     }
 
-    
+
      //Display the specified resource on the loged in user.
-     
+
     public function show(Request $request)
     {
         $user = $request->User();

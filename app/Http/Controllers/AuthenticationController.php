@@ -58,24 +58,19 @@ public function login(Request $request)
     public function login(Request $request)
 {
     $request->validate([
-        /*
-        manually shows error if the user does not exist in the database
-        'username' => 'required|exists:users'
-        */
-        //does not manually show error messages if the user does not exist in the database
         'username' => 'required',
         'password' => 'required'
     ]);
 
     $user = User::where('username', $request->username)->first();
 
-    //manually validates if the user does not exit in your database
+    //manually validates if the user does not exit in your database, response code is 201
     if (!$user){
         return response()->json([
             'error'=> 'user not found, Please check your username'
         ],201);
     }
-    //manually validates if the username exist but the password is wrong
+    //manually validates if the username exist but the password is wrong, response code is 201
     if(!Hash::check($request ->password,$user->password)){
         return response()->json([
             'message'=>'Wrong password, Please try again'

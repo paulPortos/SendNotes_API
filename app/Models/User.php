@@ -52,5 +52,9 @@ class User extends Authenticatable
         return $this->hasMany(notes::class);
     }
 
+    public function linkToFlashcards(){
+        return $this->hasMany(Flashcards::class);
+    }
+
 
 }
