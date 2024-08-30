@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('flashcards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table -> foreignid('user_id')->constrained()->cascadeOnDelete();
-            $table->string("title")->unique();
-            $table->string("contents");
-            $table->boolean("public");
+            $table ->foreignid('user_id')->constrained()->cascadeOnDelete();
+            $table->string('title')->unique();
+            $table->json('cards');
+            $table->boolean('public');
         });
     }
 

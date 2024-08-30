@@ -10,12 +10,15 @@ class Flashcards extends Model
     use HasFactory;
 
     protected $fillable =[
-        'username',
         'title',
-        'contents',
+        'cards',
         'public'
     ];
-    
+
+    protected $casts = [
+        'cards' => 'array',
+    ];
+
     public function linkToUser(){
         return $this->belongsTo(User::class);
     }

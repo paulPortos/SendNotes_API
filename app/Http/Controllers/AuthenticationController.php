@@ -22,10 +22,9 @@ class AuthenticationController extends Controller
         if($user){
             return response()->json([
                 'error'=> 'username already exist. Try another username'
-            ],202);
+            ],409);
         }
          User::create($fields);
-
 
         return ['message' => 'User registered successfully!'];
     }
