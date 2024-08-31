@@ -28,11 +28,13 @@ class FlashcardsController extends Controller implements HasMiddleware
 
     public function store(Request $request){
         $fields = $request -> validate([
-            'title' => 'required|string|max:100',
+            'title' => 'required|string|max:100|unique:flashcards',
             'cards' => 'required|array',
             'cards.*' => 'required|string',
             'public' => 'required|boolean'
         ]);
+
+        
 
         $flashcards = $request->User()->linkToFlashcards()->create($fields);
 
