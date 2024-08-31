@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Admin;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,7 +56,7 @@ public function login(Request $request)
 */
 
 
-    public function login(Request $request)
+    /*public function login(Request $request)
 {
     $request->validate([
         'username' => 'required',
@@ -82,13 +84,78 @@ public function login(Request $request)
         'user' => $user,
         'token' => $token->plainTextToken
     ];
-}
+*/
+
+        // Check for admin credentials first
+        public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        // Check for admin credentials
+        if ($request->username === 'admin' && $request->password === 'admin123') {
+            $admin = Admin::firstOrCreate([
+                'username' => 'admin'
+            ], [
+                'password' => Hash::make('admin123')
+            ]);
+
+            $token = $admin->createToken('Admin Token')->plainTextToken;
+
+            return [
+                'admin' => $admin,
+                'token' => $token
+            ];
+        }
+
+        // Check for user credentials
+        $user = User::where('username', $request->username)->first();
+
+        if (!$user) {
+            return response()->json([
+                'error' => 'User not found. Please check your username.'
+            ], 404);
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Wrong password. Please try again.'
+            ], 401);
+        }
+
+        $token = $user->createToken($request->username)->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $token
+        ];
+    }
+    
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        return [
-            'message' => 'User has been logged out.'
-        ];
+        $token = $request->bearerToken();
+    
+        if ($token) {
+            
+            $user = $request->user();
+            if ($user) {
+                $user->tokens()->delete();
+                return response()->json(['message' => 'User has been logged out.']);
+            }
+    
+           
+            $admin = $request->admin();
+            if ($admin) {
+                $admin->tokens()->delete();
+                return response()->json(['message' => 'Admin has been logged out.']);
+            }
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+    
+        
+        return response()->json(['error' => 'No token provided'], 401);
     }
 }
