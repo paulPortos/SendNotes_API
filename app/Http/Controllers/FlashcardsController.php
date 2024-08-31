@@ -28,13 +28,19 @@ class FlashcardsController extends Controller implements HasMiddleware
 
     public function store(Request $request){
         $fields = $request -> validate([
-            'title' => 'required|string|max:100|unique:flashcards',
+            'title' => 'required|string|max:100',
             'cards' => 'required|array',
             'cards.*' => 'required|string',
             'public' => 'required|boolean'
         ]);
 
-        
+        $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
+
+        if($flashcardExists){
+            return response()->json([
+                'error' => 'title already exist. Try another title'
+            ],409);
+        }
 
         $flashcards = $request->User()->linkToFlashcards()->create($fields);
 
@@ -45,45 +51,25 @@ class FlashcardsController extends Controller implements HasMiddleware
         $user = $request->User();
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
-        return $request()->json([
+        return request()->json([
             'status' => 'Success',
             'cards' => $flashcards
         ]);
     }
 
-    public function update(Request $request, Flashcards $flashcards){
-         Gate::authorize('modify',$flashcards);
-         $fields = $request -> validate([
+    public function update(Request $request, Flashcards $flashcard) {
+        Gate::authorize('modify', $flashcard);
+        $fields = $request->validate([
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
-         ]);
+        ]);
 
-         if (isset($fields['title'])) {
-            $flashcards->title = $fields['title'];
-        }
 
-        // Update the flashcard's title if provided
-        if (isset($fields['cards'])) {
-            // Get current cards from the JSON column
-            $currentCards = $flashcards->cards;
+        $flashcard->update($fields);
 
-            foreach ($fields['cards'] as $index => $newCard) {
-                if (isset($currentCards[$index])) {
-                    // Update existing card
-                    $currentCards[$index] = $newCard;
-                } else {
-                    // Add new card if the index doesn't exist
-                    $currentCards[] = $newCard;
-                }
-            }
-
-            $flashcards->cards = $currentCards; // Assign updated cards back to the model
-        }
-
-         $flashcards -> update($fields);
-         return $request()->json([
+        return response()->json([
             'status' => 'Success',
-            'cards' => $flashcards
+            'cards' => $flashcard
         ]);
     }
 
