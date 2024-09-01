@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class FlashcardsController extends Controller implements HasMiddleware
 {
-
     public static function middleware()
     {
         return[
@@ -23,7 +22,6 @@ class FlashcardsController extends Controller implements HasMiddleware
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
        return $flashcards;
-
     }
 
     public function store(Request $request){
@@ -31,7 +29,8 @@ class FlashcardsController extends Controller implements HasMiddleware
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
             'cards.*' => 'required|string',
-            'public' => 'required|boolean'
+            'public' => 'required|boolean',
+            'to_public' => 'required|boolean',
         ]);
 
         $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
@@ -62,8 +61,9 @@ class FlashcardsController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
+            'public' => 'required|boolean',
+            'to_public' => 'required|boolean',
         ]);
-
 
         $flashcard->update($fields);
 
@@ -76,6 +76,6 @@ class FlashcardsController extends Controller implements HasMiddleware
     public function destroy(Flashcards $flashcards){
         Gate::authorize('modify', $flashcards);
         $flashcards->delete();
-        return ['message'=>'deleted notes succesfully'];
+        return ['message'=>'deleted flashcards succesfully'];
     }
 }

@@ -12,7 +12,8 @@ class Flashcards extends Model
     protected $fillable =[
         'title',
         'cards',
-        'public'
+        'public',
+        'to_public',
     ];
 
     protected $casts = [

@@ -17,6 +17,7 @@ return new class extends Migration
             $table ->foreignid('user_id')->constrained()->cascadeOnDelete();
             $table->string('title')->unique();
             $table->json('cards');
+            $table->boolean('to_public');
             $table->boolean('public');
         });
     }
