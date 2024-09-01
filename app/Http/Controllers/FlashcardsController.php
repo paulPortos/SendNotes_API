@@ -51,7 +51,7 @@ class FlashcardsController extends Controller implements HasMiddleware
         $user = $request->User();
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
-        return request()->json([
+        return response()->json([
             'status' => 'Success',
             'cards' => $flashcards
         ]);
