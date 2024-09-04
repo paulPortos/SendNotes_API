@@ -73,9 +73,9 @@ class FlashcardsController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function destroy(Flashcards $flashcards){
-        Gate::authorize('modify',$flashcards);
-        $flashcards->delete();
+    public function destroy(Flashcards $flashcard){
+        Gate::authorize('modify', $flashcard);
+        $flashcard->delete();
         return ['message'=>'deleted flashcards succesfully'];
     }
 }
