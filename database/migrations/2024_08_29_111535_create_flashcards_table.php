@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table ->foreignid('user_id')->constrained()->cascadeOnDelete();
-            $table->string('title')->unique();
+            $table->string('title');
             $table->json('cards');
             $table->boolean('to_public');
             $table->boolean('public');
