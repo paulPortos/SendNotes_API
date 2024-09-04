@@ -17,14 +17,16 @@ class FlashcardsController extends Controller implements HasMiddleware
         ];
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $user = $request->User();
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
        return $flashcards;
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $fields = $request -> validate([
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
@@ -32,10 +34,11 @@ class FlashcardsController extends Controller implements HasMiddleware
             'public' => 'required|boolean',
             'to_public' => 'required|boolean',
         ]);
-
+        //Checks if the flashcard exist in the database
         $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
 
-        if($flashcardExists){
+        if($flashcardExists)
+        {
             return response()->json([
                 'error' => 'title already exist. Try another title'
             ],409);
@@ -46,7 +49,8 @@ class FlashcardsController extends Controller implements HasMiddleware
         return response()->json($flashcards, 201);
     }
 
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         $user = $request->User();
         $flashcards = Flashcards::where('user_id', $user->id)->get();
 
@@ -56,7 +60,8 @@ class FlashcardsController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function update(Request $request, Flashcards $flashcard) {
+    public function update(Request $request, Flashcards $flashcard)
+    {
         Gate::authorize('modify', $flashcard);
         $fields = $request->validate([
             'title' => 'required|string|max:100',
@@ -64,18 +69,31 @@ class FlashcardsController extends Controller implements HasMiddleware
             'public' => 'required|boolean',
             'to_public' => 'required|boolean',
         ]);
+        //Checks if the flashcard exist in the database
+        $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
 
-        $flashcard->update($fields);
-
-        return response()->json([
-            'status' => 'Success',
-            'cards' => $flashcard
-        ]);
+        if($flashcardExists)
+        {
+            return response()->json([
+                'error' => 'title already exist. Try another title'
+            ],409);
+        }
+        else if(!$flashcardExists)
+        {
+            $flashcard->update($fields);
+            return response()->json([
+                'status' => 'Success',
+                'cards' => $flashcard
+            ]);
+        }
     }
 
-    public function destroy(Flashcards $flashcard){
+    public function destroy(Flashcards $flashcard)
+    {
         Gate::authorize('modify', $flashcard);
         $flashcard->delete();
-        return ['message'=>'deleted flashcards succesfully'];
+        return response()->json(
+            ['message'=>'deleted flashcards succesfully'],200
+        );
     }
 }
