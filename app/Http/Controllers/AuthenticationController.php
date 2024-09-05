@@ -28,31 +28,6 @@ class AuthenticationController extends Controller
 
         return ['message' => 'User registered successfully!'];
     }
-    //old login
-/*
-public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|exists:users',
-            'password'=> 'required',
-        ]);
-
-        $user = User::where('username', $request->username)->first();
-        if(!$user || !Hash::check($request->password, $user->password)){
-            return [
-                'message' => 'Logged in unsuccessfully'
-            ];
-        }
-
-        $token = $user->createToken($request->username);
-
-        return [
-            'user' => $user,
-            'token' => $token->plainTextToken
-        ];
-    }
-*/
-
 
     public function login(Request $request)
 {
