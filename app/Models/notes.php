@@ -11,7 +11,9 @@ class notes extends Model
 
     protected $fillable =[
         'title',
-        'contents'
+        'contents',
+        'public',
+        'to_public' 
     ];
     //defines a relationship between the notes model and the User model.
     public function linkToUser(){

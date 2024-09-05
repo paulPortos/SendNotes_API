@@ -16,7 +16,10 @@ return new class extends Migration
             $table -> foreignid('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('contents');
+            $table->boolean('to_public');
+            $table->boolean('public');
             $table->timestamps();
+            
         });
     }
 

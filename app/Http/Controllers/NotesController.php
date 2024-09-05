@@ -37,7 +37,9 @@ class NotesController extends Controller implements HasMiddleware
     {
         $fields = $request -> validate([
             'title' => 'required|string|max:100',
-            'contents' => 'required|string'
+            'contents' => 'required|string',
+            'public' => 'required|boolean',
+            'to_public' => 'required|boolean'
         ]);
         $notes = $request ->User()->linkToNotes()->create($fields);
 
