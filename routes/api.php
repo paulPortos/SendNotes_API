@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 
 //to add notes
+
+//Route::get('/notes', [NotesController::class, 'index'])->middleware('auth:sanctum');
 Route::apiResource('notes', NotesController::class);
 //to add flashcards
 Route::apiResource('flashcards', FlashcardsController::class);

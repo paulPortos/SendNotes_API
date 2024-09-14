@@ -25,9 +25,7 @@ class NotesController extends Controller implements HasMiddleware
 
        $user = $request->User();
        $notes = notes::where('user_id', $user->id)->get();
-
        return $notes;
-
     }
 
     /**
