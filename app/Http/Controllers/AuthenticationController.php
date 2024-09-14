@@ -13,15 +13,16 @@ class AuthenticationController extends Controller
     {
         $fields = $request->validate([
             'username' => 'required|max:100',
-            'password'=> 'required',
+            'email'=> 'required',
+            'password'=> 'required'
         ]);
 
 
-        $user = User::where('username',$fields['username'])->first();
+        $user = User::where('email',$fields['email'])->first();
 
         if($user){
             return response()->json([
-                'error'=> 'username already exist. Try another username'
+                'error'=> 'email already exist. Try another email'
             ],409);
         }
          User::create($fields);
@@ -32,16 +33,16 @@ class AuthenticationController extends Controller
     public function login(Request $request)
 {
     $request->validate([
-        'username' => 'required',
+        'email' => 'required',
         'password' => 'required'
     ]);
 
-    $user = User::where('username', $request->username)->first();
+    $user = User::where('email', $request->email)->first();
 
     //manually validates if the user does not exit in your database, response code is 201
     if (!$user){
         return response()->json([
-            'error'=> 'user not found, Please check your username'
+            'error'=> 'user not found, Please check your email'
         ],201);
     }
     //manually validates if the username exist but the password is wrong, response code is 201
@@ -51,7 +52,7 @@ class AuthenticationController extends Controller
         ],201);
     }
 
-    $token = $user->createToken($request->username);
+    $token = $user->createToken($request->email);
 
     return [
         'user' => $user,
