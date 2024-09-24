@@ -1,15 +1,12 @@
 <?php
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\ChangePassword;
-use App\Http\Controllers\FlashcardsController;
-use App\Http\Controllers\NotesController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\PublicNotesController;
 use App\Http\Controllers\AuthenticationController;
-
+use App\Http\Controllers\ChangePassword;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
