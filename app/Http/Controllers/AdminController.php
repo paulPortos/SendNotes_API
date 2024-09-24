@@ -15,6 +15,7 @@ class AdminController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
+            'creator' => 'required|string',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);
@@ -30,6 +31,7 @@ class AdminController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
+            'creator' => 'required|string',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);

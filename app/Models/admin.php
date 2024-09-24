@@ -10,6 +10,7 @@ class admin extends Model
     use HasFactory;
     protected $fillable =[
         'title',
+        'creator',
         'contents',
         'public',
     ];
