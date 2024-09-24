@@ -42,14 +42,14 @@ class AuthenticationController extends Controller
     //manually validates if the user does not exit in your database, response code is 201
     if (!$user){
         return response()->json([
-            'error'=> 'user not found, Please check your email'
-        ],201);
+            'error'=> 'email not found, Please check your email'
+        ],404);
     }
     //manually validates if the username exist but the password is wrong, response code is 201
     if(!Hash::check($request ->password,$user->password)){
         return response()->json([
             'message'=>'Wrong password, Please try again'
-        ],201);
+        ],401);
     }
 
     $token = $user->createToken($request->email);

@@ -1,4 +1,8 @@
 <?php
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\FlashcardsController;
+use App\Http\Controllers\NotesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotesController;
@@ -21,4 +25,11 @@ Route::apiResource('flashcards', FlashcardsController::class);
 //Authentication routes "To access"
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/register', [AuthenticationController::class, 'register']);
-Route::post('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+Route::delete('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+
+
+//change password
+Route::put('/ChangePass', [ChangePassword::class, 'ChangePass'])->middleware('auth:sanctum');
+
+
+
