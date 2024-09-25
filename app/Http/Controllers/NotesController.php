@@ -65,7 +65,9 @@ class NotesController extends Controller implements HasMiddleware
         Gate::authorize('modify',$note);
         $fields = $request -> validate([
             'title' => 'Required|max:100',
-            'contents' => 'required'
+            'contents' => 'required',
+            'public' => 'boolean',
+            'to_public' => 'boolean'
         ]);
         $note -> update($fields);
         return $note;
