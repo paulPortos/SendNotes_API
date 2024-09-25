@@ -14,4 +14,8 @@ class PublicNotes extends Model
         'contents',
         'public',
     ];
+
+    protected $casts = [
+        'public' => 'boolean',
+    ];
 }

@@ -13,8 +13,13 @@ class notes extends Model
         'title',
         'contents',
         'public',
-        'to_public' 
+        'to_public'
     ];
+
+    protected $casts = [
+        'public' => 'boolean',
+    ];
+    
     //defines a relationship between the notes model and the User model.
     public function linkToUser(){
         return $this->belongsTo(User::class);

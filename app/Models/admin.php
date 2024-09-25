@@ -14,4 +14,8 @@ class admin extends Model
         'contents',
         'public',
     ];
+
+    protected $casts = [
+        'public' => 'boolean',
+    ];
 }
