@@ -49,13 +49,14 @@ class NotesController extends Controller implements HasMiddleware
 
      //Display the specified resource on the loged in user.
 
-    public function show(Request $request)
-    {
+     public function show(Request $request, $id)
+     {
         $user = $request->User();
-        $notes = notes::where('user_id', $user->id)->get();
+        $notes = notes::where('user_id', $user->id)->where('id', $id)->firstOrFail();
 
         return $notes;
-    }
+     }
+
 
     /**
      * Update the specified resource in storage on the loged in user.
