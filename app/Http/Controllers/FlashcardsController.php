@@ -49,16 +49,31 @@ class FlashcardsController extends Controller implements HasMiddleware
         return response()->json($flashcards, 201);
     }
 
-    public function show(Request $request)
-    {
-        $user = $request->User();
-        $flashcards = Flashcards::where('user_id', $user->id)->get();
+    public function show(Request $request, $id)
+{
+    // Get the authenticated user
+    $user = $request->user();
 
+    // Retrieve the specific flashcard by its ID and ensure it belongs to the authenticated user
+    $flashcard = Flashcards::where('user_id', $user->id)
+                           ->where('id', $id)
+                           ->first();
+
+    // Check if the flashcard was found
+    if (!$flashcard) {
         return response()->json([
-            'status' => 'Success',
-            'cards' => $flashcards
-        ]);
+            'status' => 'Failed',
+            'message' => 'Flashcard not found for this user.'
+        ], 404);
     }
+
+    // Return the specific flashcard
+    return response()->json([
+        'status' => 'Success',
+        'card' => $flashcard
+    ], 200);
+}
+
 
     public function update(Request $request, Flashcards $flashcard)
     {

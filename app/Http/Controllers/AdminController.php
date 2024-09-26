@@ -23,9 +23,12 @@ class AdminController extends Controller
         $admin = Admin::create($fields);
         return response()->json($admin, 201);
     }
-    public function show(Admin $admin)
+    public function show($id)
     {
-       return $admin;
+        // Find the note by its id
+        $note = Admin::where('id', $id)->firstOrFail();
+
+        return response()->json($note);
     }
     public function update(Request $request, Admin $admin)
     {

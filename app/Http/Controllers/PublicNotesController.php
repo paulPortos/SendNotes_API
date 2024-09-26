@@ -34,10 +34,14 @@ class PublicNotesController extends Controller
         return response()->json($admin, 201);
     }
 
-    public function show(PublicNotes $PublicNotes)
+    public function show($id)
     {
-       return $PublicNotes;
+        // Find the note by its id
+        $note = PublicNotes::where('id', $id)->firstOrFail();
+
+        return response()->json($note);
     }
+
 
     public function update(Request $request, PublicNotes $PublicNotes)
     {
