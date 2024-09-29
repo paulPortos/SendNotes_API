@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\NotesController;
 use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\PublicNotesController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChangePassword;
+use App\Http\Controllers\ForgotController;
+use App\Http\Controllers\NotesController;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
@@ -27,6 +28,11 @@ Route::delete('/logout', [AuthenticationController::class, 'logout'])->middlewar
 
 //change password
 Route::put('/ChangePass', [ChangePassword::class, 'ChangePass'])->middleware('auth:sanctum');
+
+
+//forgot password
+Route::post('/forgot',[ForgotController::class,'forgot']);
+Route::post('/reset',[ForgotController::class,'reset']);
 
 
 
