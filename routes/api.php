@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\NotificationsController;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
@@ -33,6 +34,10 @@ Route::put('/ChangePass', [ChangePassword::class, 'ChangePass'])->middleware('au
 //forgot password
 Route::post('/forgot',[ForgotController::class,'forgot']);
 Route::post('/reset',[ForgotController::class,'reset']);
+
+//Notification Routes
+Route::get('/shownotif', [NotificationsController::class, 'shownotif']);
+Route::post('/makenotif', [NotificationsController::class, 'makenotif']);
 
 
 
