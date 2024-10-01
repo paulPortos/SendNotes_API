@@ -15,13 +15,14 @@ class PublicNotesController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
-            'creator' => 'required|string',
+            'creator_username' => 'required|string',
+            'creator_email' => 'required|email',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);
 
         $existingNote = PublicNotes::where('title', $fields['title'])
-                               ->where('creator', $fields['creator'])
+                               ->where('creator_username', $fields['creator_username'])
                                ->first();
         if ($existingNote)
         {
@@ -47,7 +48,8 @@ class PublicNotesController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
-            'creator' => 'required|string',
+            'creator_username' => 'required|string',
+            'creator_email' => 'required|email',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);

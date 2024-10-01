@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('creator');
+            $table->string('creator_username');
+            $table->string('creator_email')->index();
             $table->string('contents');
             $table->boolean('public');
         });

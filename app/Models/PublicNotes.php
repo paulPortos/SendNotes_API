@@ -10,7 +10,8 @@ class PublicNotes extends Model
     use HasFactory;
     protected $fillable =[
         'title',
-        'creator',
+        'creator_username',
+        'creator_email',
         'contents',
         'public',
     ];

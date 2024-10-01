@@ -15,10 +15,22 @@ class AdminController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
-            'creator' => 'required|string',
+            'creator_username' => 'required|string',
+            'creator_email' => 'required|email',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);
+
+        $existingNote = admin::where('title', $fields['title'])
+        ->where('creator_username', $fields['creator_username'])
+        ->first();
+        if ($existingNote)
+        {
+        // Return a custom error response
+        return response()->json([
+        'error' => 'A note with this title and creator already exists.'
+        ], 400);
+        }
 
         $admin = Admin::create($fields);
         return response()->json($admin, 201);
@@ -34,7 +46,8 @@ class AdminController extends Controller
     {
         $fields = $request->validate([
             'title' => 'required|string|max:255',
-            'creator' => 'required|string',
+            'creator_username' => 'required|string',
+            'creator_email' => 'required|email',
             'contents' => 'required|string',
             'public' => 'required|boolean'
         ]);
