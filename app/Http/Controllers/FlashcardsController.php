@@ -31,8 +31,8 @@ class FlashcardsController extends Controller implements HasMiddleware
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
             'cards.*' => 'required|string',
-            'public' => 'required|boolean',
-            'to_public' => 'required|boolean',
+            'public' => 'boolean',
+            'to_public' => 'boolean',
         ]);
         //Checks if the flashcard exist in the database
         $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
@@ -81,26 +81,33 @@ class FlashcardsController extends Controller implements HasMiddleware
         $fields = $request->validate([
             'title' => 'required|string|max:100',
             'cards' => 'required|array',
-            'public' => 'required|boolean',
-            'to_public' => 'required|boolean',
+            'public' => 'boolean',
+            'to_public' => 'boolean',
         ]);
         //Checks if the flashcard exist in the database
         $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
 
-        if($flashcardExists)
-        {
-            return response()->json([
-                'error' => 'title already exist. Try another title'
-            ],409);
-        }
-        else if(!$flashcardExists)
-        {
-            $flashcard->update($fields);
+        $flashcard->update($fields);
             return response()->json([
                 'status' => 'Success',
                 'cards' => $flashcard
             ]);
-        }
+
+
+        // if($flashcardExists)
+        // {
+        //     return response()->json([
+        //         'error' => 'title already exist. Try another title'
+        //     ],409);
+        // }
+        // else if(!$flashcardExists)
+        // {
+        //     $flashcard->update($fields);
+        //     return response()->json([
+        //         'status' => 'Success',
+        //         'cards' => $flashcard
+        //     ]);
+        // }
     }
 
     public function destroy(Flashcards $flashcard)
