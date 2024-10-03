@@ -55,6 +55,7 @@ class ForgotController extends Controller
         // Return the response with a success message and token (for testing purposes)
         return response()->json([
             'message' => 'Otp send to your email',
+            'OTP' => $resetPasswordToken
          
         ], 200);
     }
