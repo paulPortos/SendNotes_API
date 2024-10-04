@@ -83,4 +83,14 @@ class NotesController extends Controller implements HasMiddleware
         $note->delete();
         return ['message'=>'deleted notes succesfully'];
     }
+
+    public function public(Request $request)
+    {
+        $user = $request->User();
+
+       // Fetch all notes that are public (to_public is true)
+         $notes = notes::where('to_public', true)->get();
+
+        return $notes;
+    }
 }
