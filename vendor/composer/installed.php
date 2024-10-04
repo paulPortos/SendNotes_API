@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'fb6e0cbce9c60f20984e637355581227431eebae',
+        'reference' => '9fe7a2cb0cda02b5d2b34a3af144d14b2aba12d4',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -382,7 +382,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'fb6e0cbce9c60f20984e637355581227431eebae',
+            'reference' => '9fe7a2cb0cda02b5d2b34a3af144d14b2aba12d4',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -958,6 +958,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'staudenmeir/belongs-to-through' => array(
+            'pretty_version' => 'v2.16',
+            'version' => '2.16.0.0',
+            'reference' => '79667db6660fa0065b24415bab29a5f85a0128c7',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../staudenmeir/belongs-to-through',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'symfony/clock' => array(
             'pretty_version' => 'v7.1.1',

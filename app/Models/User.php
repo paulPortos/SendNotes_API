@@ -52,9 +52,13 @@ class User extends Authenticatable
         return $this->hasMany(notes::class);
     }
 
-    public function linkToFlashcards(){
+    public function linkToFlashcards()
+    {
         return $this->hasMany(Flashcards::class);
     }
 
-
+    public function admins()
+    {
+    return $this->hasManyThrough(admin::class, notes::class, 'user_id', 'notes_id');
+    }
 }

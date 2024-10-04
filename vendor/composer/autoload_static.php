@@ -44,6 +44,10 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         array (
             'voku\\' => 5,
         ),
+        'Z' => 
+        array (
+            'Znck\\Eloquent\\' => 14,
+        ),
         'W' => 
         array (
             'Whoops\\' => 7,
@@ -86,6 +90,7 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Clock\\' => 24,
+            'Staudenmeir\\BelongsToThrough\\' => 29,
         ),
         'R' => 
         array (
@@ -179,6 +184,10 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'Znck\\Eloquent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src',
         ),
         'Whoops\\' => 
         array (
@@ -315,6 +324,10 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'Symfony\\Component\\Clock\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
+        ),
+        'Staudenmeir\\BelongsToThrough\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src',
         ),
         'Ramsey\\Uuid\\' => 
         array (
@@ -513,9 +526,25 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
     );
 
     public static $classMap = array (
+        'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
         'App\\Http\\Controllers\\AuthenticationController' => __DIR__ . '/../..' . '/app/Http/Controllers/AuthenticationController.php',
+        'App\\Http\\Controllers\\ChangePassword' => __DIR__ . '/../..' . '/app/Http/Controllers/ChangePassword.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\FlashcardsController' => __DIR__ . '/../..' . '/app/Http/Controllers/FlashcardsController.php',
+        'App\\Http\\Controllers\\ForgotController' => __DIR__ . '/../..' . '/app/Http/Controllers/ForgotController.php',
+        'App\\Http\\Controllers\\NotesController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotesController.php',
+        'App\\Http\\Controllers\\NotificationsController' => __DIR__ . '/../..' . '/app/Http/Controllers/NotificationsController.php',
+        'App\\Http\\Controllers\\PublicNotesController' => __DIR__ . '/../..' . '/app/Http/Controllers/PublicNotesController.php',
+        'App\\Mail\\ResetPasswordOTP' => __DIR__ . '/../..' . '/app/Mail/ResetPasswordOTP.php',
+        'App\\Models\\Flashcards' => __DIR__ . '/../..' . '/app/Models/Flashcards.php',
+        'App\\Models\\Forgot_pass' => __DIR__ . '/../..' . '/app/Models/Forgot_pass.php',
+        'App\\Models\\Notifications' => __DIR__ . '/../..' . '/app/Models/Notifications.php',
+        'App\\Models\\PublicNotes' => __DIR__ . '/../..' . '/app/Models/PublicNotes.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\admin' => __DIR__ . '/../..' . '/app/Models/admin.php',
+        'App\\Models\\notes' => __DIR__ . '/../..' . '/app/Models/notes.php',
+        'App\\Policies\\FlashcardsPolicy' => __DIR__ . '/../..' . '/app/Policies/FlashcardsPolicy.php',
+        'App\\Policies\\NotesPolicy' => __DIR__ . '/../..' . '/app/Policies/NotesPolicy.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Brick\\Math\\BigDecimal' => __DIR__ . '/..' . '/brick/math/src/BigDecimal.php',
@@ -636,8 +665,12 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'Cron\\HoursField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/HoursField.php',
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
+        'Database\\Factories\\FlashcardsFactory' => __DIR__ . '/../..' . '/database/factories/FlashcardsFactory.php',
+        'Database\\Factories\\NotesFactory' => __DIR__ . '/../..' . '/database/factories/NotesFactory.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\FlashcardsSeeder' => __DIR__ . '/../..' . '/database/seeders/FlashcardsSeeder.php',
+        'Database\\Seeders\\NotesSeeder' => __DIR__ . '/../..' . '/database/seeders/NotesSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
@@ -5392,6 +5425,8 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/type/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/type/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'Staudenmeir\\BelongsToThrough\\IdeHelperServiceProvider' => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src/IdeHelperServiceProvider.php',
+        'Staudenmeir\\BelongsToThrough\\IdeHelper\\BelongsToThroughRelationsHook' => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src/IdeHelper/BelongsToThroughRelationsHook.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Clock\\Clock' => __DIR__ . '/..' . '/symfony/clock/Clock.php',
         'Symfony\\Component\\Clock\\ClockAwareTrait' => __DIR__ . '/..' . '/symfony/clock/ClockAwareTrait.php',
@@ -6434,6 +6469,9 @@ class ComposerStaticInit7e8c3c14ff33b199b4a0838993eb8423
         'Whoops\\Util\\Misc' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/Misc.php',
         'Whoops\\Util\\SystemFacade' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/SystemFacade.php',
         'Whoops\\Util\\TemplateHelper' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Util/TemplateHelper.php',
+        'Znck\\Eloquent\\Relations\\BelongsToThrough' => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src/Relations/BelongsToThrough.php',
+        'Znck\\Eloquent\\Traits\\BelongsToThrough' => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src/Traits/BelongsToThrough.php',
+        'Znck\\Eloquent\\Traits\\HasTableAlias' => __DIR__ . '/..' . '/staudenmeir/belongs-to-through/src/Traits/HasTableAlias.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
     );
 

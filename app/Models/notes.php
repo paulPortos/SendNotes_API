@@ -19,9 +19,14 @@ class notes extends Model
     protected $casts = [
         'public' => 'boolean',
     ];
-    
+
     //defines a relationship between the notes model and the User model.
     public function linkToUser(){
         return $this->belongsTo(User::class);
+    }
+
+    public function admins()
+    {
+    return $this->hasMany(admin::class, 'notes_id');
     }
 }
