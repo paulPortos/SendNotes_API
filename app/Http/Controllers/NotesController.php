@@ -76,6 +76,7 @@ class NotesController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage on the loged in user..
      */
+    
     public function destroy(notes $note)
     {
         Gate::authorize('modify',$note);
