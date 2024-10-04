@@ -77,4 +77,14 @@ class AdminController extends Controller
             'message' => 'successfully deleted'
         ],201);
     }
+
+    public function public(Request $request)
+    {
+        $user = $request->User();
+
+       // Fetch all notes that are public (to_public is true)
+         $admin = admin::where('public', true)->get();
+
+        return $admin;
+    }
 }
