@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
+            $table->foreignId('note_id')->constrained('notes')->cascadeOnDelete(); // Ensure note_id is properly defined
             $table->string('creator_username');
             $table->string('creator_email')->index();
             $table->string('contents');

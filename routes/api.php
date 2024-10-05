@@ -12,6 +12,8 @@ use App\Http\Controllers\NotificationsController;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
+//update the public
+Route::put('/admin/notes/{noteId}', [AdminController::class, 'updateNoteAsAdmin']);
 
 //to add notes
 Route::apiResource('notes', NotesController::class);

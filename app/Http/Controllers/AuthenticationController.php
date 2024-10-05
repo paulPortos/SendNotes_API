@@ -10,35 +10,42 @@ use Illuminate\Support\Facades\Hash;
 class AuthenticationController extends Controller
 {
     public function register(Request $request)
-    {
+{
+    try {
         // Validate the incoming request fields
-        // 'username' must be provided and cannot exceed 100 characters
-        // 'email' must be a valid email format
-        // 'password' is required (no specific validation rules for length or format)
         $fields = $request->validate([
             'username' => 'required|max:100',
-            'email'=> 'required|email',
-            'password'=> 'required'
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[\w\.-]+@[\w\.-]+\.\w{2,4}$/'
+            ],
+            'password' => 'required'
         ]);
 
         // Check if a user already exists with the provided email
-        // The `where` method queries the User model for the first record matching the email
         $user = User::where('email', $fields['email'])->first();
 
-        // If the user is found (i.e., an account with the same email exists), return a conflict (409) error response
+        // If the user is found, return a conflict (409) error response
         if ($user) {
             return response()->json([
-                'error' => 'email already exist. Try another email'
+                'error' => 'email already exists. Try another email'
             ], 409);
         }
 
-        // If no user exists with the given email, create a new user using the validated fields
+        // If no user exists with the given email, create a new user
         User::create($fields);
 
-        // Return a success message once the user is registered
+        // Return a success message
         return ['message' => 'User registered successfully!'];
-    }
 
+    } catch (\Exception $e) {
+        // Handle any other exceptions
+        return response()->json([
+            'error' => 'An error occurred: ' . $e->getMessage()
+        ], 500);
+    }
+}
 
     public function login(Request $request)
     {

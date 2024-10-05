@@ -14,9 +14,14 @@ class admin extends Model
         'creator_email',
         'contents',
         'public',
+        'note_id'
     ];
 
     protected $casts = [
         'public' => 'boolean',
     ];
+    public function linkToNote()
+    {
+        return $this->belongsTo(notes::class, 'note_id');
+    }
 }

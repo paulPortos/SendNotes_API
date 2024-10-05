@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerRequestRebindHandler();
         $this->registerEventRebindHandler();
     }
+    
 
     /**
      * Register the authenticator services.
@@ -109,4 +110,5 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
     }
+    
 }
