@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticationController extends Controller
 {
@@ -15,13 +16,15 @@ class AuthenticationController extends Controller
         // 'username' must be provided and cannot exceed 100 characters
         // 'email' must be a valid email format
         // 'password' is required (no specific validation rules for length or format)
-        $fields = $request->validate([
-            'username' => 'required|max:100',
-            'email'=> 'required|email',
-            'password'=> 'required'
-        ]);
+        try {
+            // Validate the request
+            $fields = $request->validate([
+                'username' => 'required|max:100',
+                'email'=> 'required|email',
+                'password'=> 'required'
+            ]);
 
-        // Check if a user already exists with the provided email
+             // Check if a user already exists with the provided email
         // The `where` method queries the User model for the first record matching the email
         $user = User::where('email', $fields['email'])->first();
 
@@ -36,16 +39,22 @@ class AuthenticationController extends Controller
         User::create($fields);
 
         // Return a success message once the user is registered
-        return ['message' => 'User registered successfully!'];
-    }
+        return ['message' => 'User registered successfully!',201];
 
+
+
+        } catch (ValidationException $e) {
+            // Return JSON response with validation errors
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+    }
 
     public function login(Request $request)
     {
         // Validate the incoming request data
         // Both 'email' and 'password' fields are required for login
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
