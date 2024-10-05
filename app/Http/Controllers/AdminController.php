@@ -82,8 +82,18 @@ class AdminController extends Controller
     {
         $user = $request->User();
 
-       // Fetch all notes that are public (to_public is true)
+       // Fetch all notes that are public (to public is true)
          $admin = admin::where('public', true)->get();
+
+        return $admin;
+    }
+
+    public function showPublicFalse(Request $request)
+    {
+        $user = $request->User();
+
+       // Fetch all notes that are public (to public is false)
+         $admin = admin::where('public', false)->get();
 
         return $admin;
     }

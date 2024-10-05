@@ -16,8 +16,11 @@ Route::apiResource('admin', AdminController::class);
 //to add notes
 Route::apiResource('notes', NotesController::class);
 
-//show public notes
+//show public notes (true)
 Route::get('public_notes',[AdminController::class,'public']);
+
+//Show public notes (false)
+Route::get('pending_notes', [AdminController::class, 'showPublicFalse']);
 
 //to add flashcards
 Route::apiResource('flashcards', FlashcardsController::class);
