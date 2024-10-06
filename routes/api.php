@@ -12,12 +12,13 @@ use App\Http\Controllers\NotificationsController;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
-
+//update the public
+Route::put('/adminUpdater/{noteId}', [AdminController::class, 'updateNoteAsAdmin']);
 //to add notes
 Route::apiResource('notes', NotesController::class);
 
 //show public notes
-Route::get('public_notes',[AdminController::class,'public']);
+Route::get('public_notes',[NotesController::class,'public']);
 
 //to add flashcards
 Route::apiResource('flashcards', FlashcardsController::class);
