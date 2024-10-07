@@ -15,7 +15,6 @@ class AdminController extends Controller
     }
     public function store(Request $request)
 {
-
     // Validate the request input
     $fields = $request->validate([
         'notes_id' => 'required|exists:notes,id',
@@ -25,6 +24,14 @@ class AdminController extends Controller
         'contents' => 'required|string',
         'public' => 'required|boolean',
     ]);
+
+    // Check if an admin note with the same notes_id already exists
+    $existingAdmin = Admin::where('notes_id', $fields['notes_id'])->first();
+
+    if ($existingAdmin) {
+        return response()->json(['error' => 'An admin note with this notes_id already exists'], 409);
+    }
+
     // Retrieve the note to ensure the notes_id is valid
     $note = notes::find($fields['notes_id']);
 
@@ -32,7 +39,7 @@ class AdminController extends Controller
         return response()->json(['error' => 'Note not found'], 404);
     }
 
-    // Create the new admin note if no duplicate is found
+    // Create the new admin note
     $admin = Admin::create([
         'notes_id' => $fields['notes_id'],
         'title' => $fields['title'],
@@ -46,6 +53,7 @@ class AdminController extends Controller
     // Return a success response with the newly created admin record
     return response()->json($admin, 201);
 }
+
 
 
 
