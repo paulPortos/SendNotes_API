@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FlashcardsController;
-use App\Http\Controllers\PublicNotesController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ForgotController;
@@ -12,12 +11,13 @@ use App\Http\Controllers\NotificationsController;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
-
+//update the public
+Route::put('/adminUpdater/{noteId}', [AdminController::class, 'updateNoteAsAdmin']);
 //to add notes
 Route::apiResource('notes', NotesController::class);
 
 //show public notes (true)
-Route::get('public_notes',[AdminController::class,'public']);
+Route::get('public_notes',[NotesController::class,'public']);
 
 //Show public notes (false)
 Route::get('pending_notes', [AdminController::class, 'showPublicFalse']);

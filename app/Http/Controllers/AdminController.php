@@ -78,14 +78,31 @@ class AdminController extends Controller
         ],201);
     }
 
-    public function public(Request $request)
+
+    public function updateNoteAsAdmin(Request $request, $noteId,Admin $admin)
     {
-        $user = $request->User();
+        // Find the note by its ID
+        $note = notes::findOrFail($noteId);
 
-       // Fetch all notes that are public (to public is true)
-         $admin = admin::where('public', true)->get();
+        // No need for authorization checks since this is a public access
+        // Validate the request
+        $fields = $request->validate([
+            'public' => 'boolean',
+            'to_public' => 'boolean'
+        ]);
+       // Find the corresponding Admin record by the note_id and delete it
+        $admin = Admin::where('notes_id', $note->id)->first(); // Find Admin linked to the note
 
-        return $admin;
+        if ($admin) {
+            $admin->delete(); // Delete the Admin entry linked to the note
+        }
+
+        // Update the note
+        $note->update($fields);
+
+
+
+        return response()->json(['message' => 'Note updated successfully', 'note' => $note]);
     }
 
     public function showPublicFalse(Request $request)
