@@ -29,4 +29,9 @@ class notes extends Model
     {
     return $this->hasMany(admin::class, 'notes_id');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notifications::class, 'notes_id');
+    }
 }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('notes', 'user_id')->cascadeOnDelete();
+            $table->foreignId('notes_id')->constrained('notes')->cascadeOnDelete();
+            $table->string('notes_title');
             $table->string('notification_type');
             $table ->string('email')->index();
             $table->String('message');

@@ -8,6 +8,7 @@ use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\NotificationsController;
+use App\Models\Notifications;
 
 //to Admin
 Route::apiResource('admin', AdminController::class);
@@ -42,6 +43,7 @@ Route::post('/reset',[ForgotController::class,'reset']);
 //Notification Routes
 Route::get('/shownotif', [NotificationsController::class, 'shownotif']);
 Route::post('/makenotif', [NotificationsController::class, 'makenotif']);
+Route::post('/noteDecline', [NotificationsController::class, 'noteDeclinedNotif']);
 
 
 
