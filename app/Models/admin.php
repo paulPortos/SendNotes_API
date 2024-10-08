@@ -17,10 +17,12 @@ class admin extends Model
         'contents',
         'public',
         'user_id',
+        'to_public'
     ];
 
     protected $casts = [
         'public' => 'boolean',
+        'to_public' => 'boolean'
     ];
 
     public function notes(){

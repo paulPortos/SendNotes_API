@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('creator_email')->index();
             $table->string('contents');
             $table->boolean('public');
+            $table->boolean('to_public');
         });
     }
 

@@ -40,15 +40,13 @@ class AdminController extends Controller
         'creator_email' => $fields['creator_email'],
         'contents' => $fields['contents'],
         'public' => $fields['public'],
-        'user_id' => $note->user_id  // Get user_id from the retrieved note
+        'user_id' => $note->user_id,  // Get user_id from the retrieved note
+        'to_public' => true
     ]);
 
     // Return a success response with the newly created admin record
     return response()->json($admin, 201);
-}
-
-
-
+    }
 
     public function show($id)
     {
@@ -64,12 +62,14 @@ class AdminController extends Controller
             'creator_username' => 'required|string',
             'creator_email' => 'required|email',
             'contents' => 'required|string',
-            'public' => 'required|boolean'
+            'public' => 'required|boolean',
+            'to_public' => 'required|boolean'
         ]);
 
         $updated = $admin -> update($fields);
         return response()->json($admin, 201);
     }
+
     public function destroy(Admin $admin)
     {
         $del = $admin -> delete();
@@ -99,9 +99,6 @@ class AdminController extends Controller
 
         // Update the note
         $note->update($fields);
-
-
-
         return response()->json(['message' => 'Note updated successfully', 'note' => $note]);
     }
 
