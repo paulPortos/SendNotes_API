@@ -1,26 +1,32 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\FlashcardsController;
-use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChangePassword;
-use App\Http\Controllers\ForgotController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\ForgotController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\AuthenticationController;
 
 //to Admin
-Route::apiResource('admin', AdminController::class);
+Route::apiResource('/admin', AdminController::class);
 //update the public
 Route::put('/adminUpdater/{noteId}', [AdminController::class, 'updateNoteAsAdmin']);
 //to add notes
-Route::apiResource('notes', NotesController::class);
+Route::apiResource('/notes', NotesController::class);
+
+//comments
+Route::apiResource('/comments', CommentsController::class);
+Route::get('/comments/note/{note_id}', [CommentsController::class, 'getCommentsByNoteId']);
+
 
 //show public notes
-Route::get('public_notes',[NotesController::class,'public']);
+Route::get('/public_notes',[NotesController::class,'public']);
 
 //to add flashcards
-Route::apiResource('flashcards', FlashcardsController::class);
+Route::apiResource('/flashcards', FlashcardsController::class);
 
 //Authentication routes "To access"
 Route::post('/login', [AuthenticationController::class, 'login']);

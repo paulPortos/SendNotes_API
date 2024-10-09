@@ -29,4 +29,9 @@ class notes extends Model
     {
     return $this->hasMany(admin::class, 'notes_id');
     }
+
+    public function comment()
+    {
+    return $this->hasMany(Comments::class, 'notes_id');
+    }
 }

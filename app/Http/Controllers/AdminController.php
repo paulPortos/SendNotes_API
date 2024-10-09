@@ -80,7 +80,7 @@ class AdminController extends Controller
     }
     public function destroy(Admin $admin)
     {
-        $del = $admin -> delete();
+        $admin -> delete();
         return response()->json([
             'message' => 'successfully deleted'
         ],201);
