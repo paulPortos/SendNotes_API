@@ -9,11 +9,6 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\ChangePassword;
-use App\Http\Controllers\ForgotController;
-use App\Http\Controllers\NotesController;
-use App\Http\Controllers\NotificationsController;
-use App\Models\Notifications;
 
 //to Admin
 Route::apiResource('/admin', AdminController::class);
