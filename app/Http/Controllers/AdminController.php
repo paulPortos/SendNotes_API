@@ -86,7 +86,6 @@ class AdminController extends Controller
         ],201);
     }
 
-
     public function updateNoteAsAdmin(Request $request, $noteId,Admin $admin)
     {
         // Find the note by its ID

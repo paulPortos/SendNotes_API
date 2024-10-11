@@ -18,6 +18,7 @@ class notes extends Model
 
     protected $casts = [
         'public' => 'boolean',
+        'to_public' => 'boolean'
     ];
 
     //defines a relationship between the notes model and the User model.
