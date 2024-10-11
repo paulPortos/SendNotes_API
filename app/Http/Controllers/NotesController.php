@@ -79,8 +79,10 @@ class NotesController extends Controller implements HasMiddleware
     
     public function destroy(notes $note)
     {
-        Gate::authorize('modify',$note);
-        $note->delete();
+        if (Gate::denies('modify', $note)) {
+            return response()->json(['error' => 'Not authorized to delete this note'], 403); // Unauthorized response
+        }
+        $note->delete();    
         return ['message'=>'deleted notes succesfully'];
     }
 
