@@ -49,8 +49,9 @@ Route::post('/reset',[ForgotController::class,'reset']);
 
 //Notification Routes
 Route::middleware('auth:sanctum')->get('/shownotif', [NotificationsController::class, 'shownotif']);
-Route::post('/makenotif', [NotificationsController::class, 'makenotif']);
+Route::post('/noteAccepted', [NotificationsController::class, 'noteAcceptedNotif']);
 Route::post('/noteDecline', [NotificationsController::class, 'noteDeclinedNotif']);
+Route::post('/notePending', [NotificationsController::class, 'notePendingNotif']);
 
 
 

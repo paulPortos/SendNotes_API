@@ -6,7 +6,6 @@ use App\Models\notes;
 use Illuminate\Http\Request;
 use App\Models\Notifications;
 
-
 class NotificationsController extends Controller
 {
     public function shownotif(Request $request)
@@ -43,10 +42,7 @@ class NotificationsController extends Controller
             ]);
 
             // Return a success response
-            return response()->json([
-                'message' => 'Notification created successfully',
-                'notification' => $notif
-            ], 201);
+            return response()->json($notif, 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Return validation error messages
@@ -54,7 +50,6 @@ class NotificationsController extends Controller
                 'message' => 'Validation failed',
                 'errors' => $e->errors()
             ], 422);
-
         }
     }
 
@@ -63,22 +58,27 @@ class NotificationsController extends Controller
         try {
             // Validate the request
             $fields = $request->validate([
+                'notes_id' => 'required|exists:notes,id',
                 'email' => 'required|email|string',
                 'message' => 'required|string'
             ]);
 
+            $note = notes::find($fields['notes_id']);
+
             // Try to create the notification
             $notif = Notifications::create([
-                'notification_type' => 'Admin has approved your note to be shared',
+                'notes_id' => $fields['notes_id'],
+                'notes_title' => $note->title,
+                'notification_type' => 'Admin has accepted your note to be shared',
                 'email' => $fields['email'],
                 'message' => $fields['message'],
+                'user_id' => $note->user_id,
             ]);
 
             // Return a success response
-            return response()->json([
-                'message' => 'Notification created successfully',
-                'notification' => $notif
-            ], 201);
+            return response()->json(
+                $notif, 201
+            );
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Return validation error messages
@@ -89,27 +89,30 @@ class NotificationsController extends Controller
         }
     }
 
-    public function notePendingNotif(Request $request)
+    public function notePendingNotif(Request $request) // Corrected placement
     {
         try {
             // Validate the request
             $fields = $request->validate([
+                'notes_id' => 'required|exists:notes,id',
                 'email' => 'required|email|string',
                 'message' => 'required|string'
             ]);
 
+            $note = notes::find($fields['notes_id']);
+
             // Try to create the notification
             $notif = Notifications::create([
-                'notification_type' => 'Your note is pending for approval',
+                'notes_id' => $fields['notes_id'],
+                'notes_title' => $note->title,
+                'notification_type' => 'Note is pending for approval',
                 'email' => $fields['email'],
                 'message' => $fields['message'],
+                'user_id' => $note->user_id,
             ]);
 
             // Return a success response
-            return response()->json([
-                'message' => 'Notification created successfully',
-                'notification' => $notif
-            ], 201);
+            return response()->json($notif, 201);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Return validation error messages
