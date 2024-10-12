@@ -13,7 +13,7 @@ class Comments extends Model
 
     protected $fillable =[
         'username',
-        'comments',
+        'comment',
         'user_id',
         'notes_id'
     ];

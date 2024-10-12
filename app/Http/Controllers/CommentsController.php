@@ -27,7 +27,7 @@ class CommentsController extends Controller implements HasMiddleware
     $fields  = $request->validate([
         'username'=>'required|string',
         'notes_id' => 'required|exists:notes,id',
-        'comments'=> 'required',
+        'comment'=> 'required',
 
     ]);
 
@@ -40,7 +40,7 @@ class CommentsController extends Controller implements HasMiddleware
 
     $comments = comments::create([
         'username' => $fields['username'],
-        'comments' => $fields['comments'],
+        'comment' => $fields['comment'],
         'notes_id' => $fields['notes_id'],
         'user_id' => $notesid->user_id  // Get user_id from the retrieved note
     ]);
@@ -68,7 +68,7 @@ class CommentsController extends Controller implements HasMiddleware
         $fields  = $request->validate([
             'username'=>'required|string',
             'notes_id' => 'required|exists:notes,id',
-            'comments'=> 'required',
+            'comment'=> 'required',
     
         ]);
     }
