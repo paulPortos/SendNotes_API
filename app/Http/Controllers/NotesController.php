@@ -76,13 +76,13 @@ class NotesController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage on the loged in user..
      */
-    
+
     public function destroy(notes $note)
     {
         if (Gate::denies('modify', $note)) {
             return response()->json(['error' => 'Not authorized to delete this note'], 403); // Unauthorized response
         }
-        $note->delete();    
+        $note->delete();
         return ['message'=>'deleted notes succesfully'];
     }
 

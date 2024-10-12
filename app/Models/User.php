@@ -66,7 +66,7 @@ class User extends Authenticatable
     return $this->hasManyThrough(Comments::class, notes::class, 'user_id', 'notes_id');
     }
 
-    public function notifacation()
+    public function notification()
     {
     return $this->hasManyThrough(Notifications::class, notes::class, 'user_id', 'notes_id');
     }
