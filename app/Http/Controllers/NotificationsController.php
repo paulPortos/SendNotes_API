@@ -13,7 +13,7 @@ class NotificationsController extends Controller
         $user = $request->user(); // Ensure the user is authenticated
         if ($user) {
             $notif = Notifications::where('user_id', $user->id)->get();
-            return response()->json($notif); // Return as JSON for consistency in APIs
+            return $notif; // Return as JSON for consistency in APIs
         } else {
             return response()->json(['message' => 'User not authenticated'], 401);
         }
