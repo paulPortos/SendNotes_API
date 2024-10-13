@@ -14,8 +14,8 @@ class Comments extends Model
     protected $fillable =[
         'username',
         'comment',
-        'user_id',
-        'notes_id'
+        'notes_id',
+         'user_id'
     ];
     public function notes(){
         return $this->belongsTo(notes::class, 'notes_id');
@@ -26,6 +26,10 @@ class Comments extends Model
             User::class,  // The final model (User)
             notes::class  // The intermediate model (Notes)
         );
+    }
+    public function userId()
+    {
+        return $this->belongsTo(User::class);
     }
 
 
