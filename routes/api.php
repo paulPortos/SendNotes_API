@@ -7,6 +7,7 @@ use App\Http\Controllers\NotesController;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\FlashcardsController;
+use App\Http\Controllers\SendNotificationEmail;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\AuthenticationController;
 
@@ -20,7 +21,6 @@ Route::apiResource('/notes', NotesController::class);
 //comments
 Route::apiResource('/comments', CommentsController::class);
 Route::get('/comments/note/{note_id}', [CommentsController::class, 'getCommentsByNoteId']);
-
 
 //show public notes (true)
 Route::get('public_notes',[NotesController::class,'public']);
@@ -38,10 +38,8 @@ Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::delete('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
 
-
 //change password
 Route::put('/ChangePass', [ChangePassword::class, 'ChangePass'])->middleware('auth:sanctum');
-
 
 //forgot password
 Route::post('/forgot',[ForgotController::class,'forgot']);
@@ -53,5 +51,5 @@ Route::post('/noteAccepted', [NotificationsController::class, 'noteAcceptedNotif
 Route::post('/noteDecline', [NotificationsController::class, 'noteDeclinedNotif']);
 Route::post('/notePending', [NotificationsController::class, 'notePendingNotif']);
 
-
-
+Route::post('/sendApproveEmail', [SendNotificationEmail::class, 'sendApprovedNotificationEmail']);
+Route::post('/sendDeclineEmail', [SendNotificationEmail::class, 'sendDeclineNotificationEmail']);
