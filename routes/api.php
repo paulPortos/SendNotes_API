@@ -23,8 +23,6 @@ Route::get('/comments/note/{note_id}', [CommentsController::class, 'getCommentsB
 Route::delete('/notes/{note_id}/comments/{comment_id}', [CommentsController::class, 'deleteUserCommentByNoteId'])->middleware('auth:sanctum');
 
 
-//show public notes (true)
-Route::get('public_notes',[NotesController::class,'public']);
 
 //Show public notes (false)
 Route::get('pending_notes', [AdminController::class, 'showPublicFalse']);

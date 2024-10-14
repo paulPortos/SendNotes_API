@@ -23,7 +23,8 @@ class CommentsController extends Controller implements HasMiddleware
   }
 
   public function store(Request $request){
-    $fields  = $request->validate([
+    
+        $request->validate([
         'username'=>'required|string',
         'notes_id' => 'required|exists:notes,id',
         'comment'=> 'required',

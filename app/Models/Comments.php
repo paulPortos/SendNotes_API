@@ -20,14 +20,8 @@ class Comments extends Model
     public function notes(){
         return $this->belongsTo(notes::class, 'notes_id');
     }
+
     public function user()
-    {
-        return $this->belongsToThrough(
-            User::class,  // The final model (User)
-            notes::class  // The intermediate model (Notes)
-        );
-    }
-    public function userId()
     {
         return $this->belongsTo(User::class);
     }
