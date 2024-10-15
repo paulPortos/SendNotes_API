@@ -36,6 +36,9 @@ Route::apiResource('/flashcards', FlashcardsController::class);
 Route::post('/login', [AuthenticationController::class, 'login']);
 Route::post('/register', [AuthenticationController::class, 'register']);
 Route::delete('/logout', [AuthenticationController::class, 'logout'])->middleware('auth:sanctum');
+//verify emailaddress
+Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'verify'])->name('verification.verify');
+Route::get('/email/resend', [AuthenticationController::class, 'resend'])->name('verification.resend');
 
 
 //change password

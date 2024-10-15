@@ -110,6 +110,11 @@ return [
     |
     */
 
+    'verification' => [
+    'enabled' => true,
+    'verify_email' => true,
+    ],
+
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
 ];
