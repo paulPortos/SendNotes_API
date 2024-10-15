@@ -6,7 +6,6 @@ use App\Models\notes;
 use App\Models\Comments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Egulias\EmailValidator\Parser\Comment;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
@@ -19,34 +18,29 @@ class CommentsController extends Controller implements HasMiddleware
             new Middleware('auth:sanctum')
         ];
     }
-  public function index(Request $request){
+  public function index(){
         return Comments::all();
   }
 
   public function store(Request $request){
-    $fields  = $request->validate([
+    
+        $request->validate([
         'username'=>'required|string',
         'notes_id' => 'required|exists:notes,id',
         'comment'=> 'required',
 
     ]);
 
-    $notesid = notes::find($fields['notes_id']);
-
-
-    if(!$notesid){
-        return response()->json(['error' => 'Note not found'], 404);
-    }
-
-    $comments = comments::create([
-        'username' => $fields['username'],
-        'comment' => $fields['comment'],
-        'notes_id' => $fields['notes_id'],
-        'user_id' => $notesid->user_id  // Get user_id from the retrieved note
+    $comments = $request ->User()->linktocomments()->create([
+        'username' => $request->username,
+        'notes_id' => $request->notes_id,
+        'comment' => $request->comment,
+        'user_id' => $request->user()->id,  // Associate the logged-in user
     ]);
+
+    return $comments;
      
-      // Return a success response with the newly created admin record
-      return response()->json($comments, 201);
+    
   }
   
   public function show($commentId)
@@ -74,25 +68,52 @@ class CommentsController extends Controller implements HasMiddleware
     }
     public function destroy(Comments $comment)
 {
-    Gate::authorize('modify', $comment);
+    Gate::authorize('modifycomment', $comment);
     $comment->delete(); // This will now correctly delete the comment instance
     return response()->json(['message' => 'Comment deleted successfully'], 200);
 }
     
-    public function getCommentsByNoteId($note_id)
+public function getCommentsByNoteId($note_id)
+    {
+        // Check if the note exists
+        $note = notes::find($note_id);
+
+        if (!$note) {
+            return response()->json(['error' => 'Note not found'], 404);
+        }
+
+        // Retrieve all comments for the specific note
+        $comments = Comments::where('notes_id', $note_id)->get();
+
+        // Return the comments
+        return response()->json($comments, 200);
+    }
+
+    public function deleteUserCommentByNoteId(Request $request, $note_id, $comment_id)
 {
     // Check if the note exists
-    
     $note = notes::find($note_id);
 
-    if(!$note){
+    if (!$note) {
         return response()->json(['error' => 'Note not found'], 404);
     }
 
-    // Retrieve all comments for the specific note
-    $comments = Comments::where('notes_id', $note_id)->get();
+    // Find the comment by ID
+    $comment = Comments::find($comment_id);
 
-    // Return the comments
-    return response()->json($comments, 200);
+    // Check if the comment exists
+    if (!$comment) {
+        return response()->json(['error' => 'Comment not found'], 404);
+    }
+
+    // Check if the comment belongs to the authenticated user
+    if ($comment->user_id !== $request->user()->id) {
+        return response()->json(['error' => 'You are not authorized to delete this comment'], 403); // Forbidden response
+    }
+
+    // If authorized, delete the comment
+    $comment->delete();
+
+    return response()->json(['message' => 'Comment deleted successfully'], 200);
 }
 }

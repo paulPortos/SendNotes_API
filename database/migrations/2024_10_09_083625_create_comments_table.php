@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('comment');
             $table->String('username');
-            $table->foreignId('user_id')->constrained('notes', 'user_id')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('notes_id')->constrained('notes')->cascadeOnDelete();
             $table->timestamps();
         });
