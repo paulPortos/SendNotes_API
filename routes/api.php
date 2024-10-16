@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\ReactionsController;
 use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\SendNotificationEmail;
 use App\Http\Controllers\NotificationsController;
@@ -52,3 +53,6 @@ Route::post('/notePending', [NotificationsController::class, 'notePendingNotif']
 
 Route::post('/sendApproveEmail', [SendNotificationEmail::class, 'sendApprovedNotificationEmail']);
 Route::post('/sendDeclineEmail', [SendNotificationEmail::class, 'sendDeclineNotificationEmail']);
+
+Route::get('/showReactions/{note_id}', [ReactionsController::class, 'showReactions']);
+Route::post('/likePost/{note_id}', [ReactionsController::class, 'likePost']);

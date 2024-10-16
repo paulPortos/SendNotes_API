@@ -40,4 +40,9 @@ class notes extends Model
     {
     return $this->hasMany(Comments::class, 'notes_id');
     }
+
+    public function reactions()
+    {
+        return $this->hasOne(Reactions::class, 'notes_id');
+    }
 }
