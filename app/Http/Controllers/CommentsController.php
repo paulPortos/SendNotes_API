@@ -23,7 +23,7 @@ class CommentsController extends Controller implements HasMiddleware
   }
 
   public function store(Request $request){
-    
+
         $request->validate([
         'username'=>'required|string',
         'notes_id' => 'required|exists:notes,id',
@@ -39,31 +39,31 @@ class CommentsController extends Controller implements HasMiddleware
     ]);
 
     return $comments;
-     
-    
+
+
   }
-  
+
   public function show($commentId)
   {
       // Find the comment by ID
       $comment = Comments::find($commentId);
-  
+
       // Check if the comment exists
       if (!$comment) {
           return response()->json(['error' => 'Comment not found'], 404); // Not found response
       }
-  
+
       // Return the found comment
       return response()->json($comment, 200);
   }
-  
+
     public function update(Request $request, Comments $comments)
     {
         $fields  = $request->validate([
             'username'=>'required|string',
             'notes_id' => 'required|exists:notes,id',
             'comment'=> 'required',
-    
+
         ]);
     }
     public function destroy(Comments $comment)
@@ -72,7 +72,7 @@ class CommentsController extends Controller implements HasMiddleware
     $comment->delete(); // This will now correctly delete the comment instance
     return response()->json(['message' => 'Comment deleted successfully'], 200);
 }
-    
+
 public function getCommentsByNoteId($note_id)
     {
         // Check if the note exists
