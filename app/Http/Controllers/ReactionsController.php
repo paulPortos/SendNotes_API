@@ -11,61 +11,27 @@ class ReactionsController extends Controller
 
     public function showReactions($note_id)
     {
-        // Find the reaction by the note_id passed as a route parameter
-        $reaction = Reactions::where('notes_id', $note_id)->first();
+        // Get all reactions for the specific note
+        $reactions = Reactions::where('notes_id', $note_id)->get();
 
-        if ($reaction) {
-            // Return the likes and dislikes counts for the note
+        if ($reactions->isNotEmpty()) {
+            // Count the number of likes and dislikes
+            $likesCount = $reactions->where('has_liked', true)->count();
+            $dislikesCount = $reactions->where('has_disliked', true)->count();
+
+            // Return the counts
             return response()->json([
-                'likes' => $reaction->likes,
-                'dislikes' => $reaction->dislikes,
+                'likes' => $likesCount,
+                'dislikes' => $dislikesCount,
             ]);
         } else {
-            // If no reaction is found, return a message
+            // If no reactions are found, return a message
             return response()->json(['message' => 'No reactions found for this note'], 404);
         }
     }
 
+
     public function likePost(Request $request, $note_id)
-    {
-    $note = notes::find($note_id);
-
-        if (!$note) {
-            return response()->json(['message' => 'Note not found'], 404);
-        }
-
-        $user_id = $request->user()->id;
-
-        // Check if a reaction already exists for this user and note
-        $reaction = Reactions::where('notes_id', $note_id)
-                         ->where('user_id', $user_id)
-                         ->first();
-
-    if ($reaction) {
-        if ($reaction->likes > 0) {
-            // User already liked the note, so we don't allow another like
-            return response()->json(['message' => 'You have already liked this note'], 403);
-        } else {
-            // If the user disliked the note before, remove the dislike and add a like
-            $reaction->likes = 1;      // Add the like
-            $reaction->dislikes = 0;   // Remove the dislike
-            $reaction->save();
-
-            return response()->json(['message' => 'Dislike removed and like added successfully', 'likes' => $reaction->likes]);
-        }
-    }
-
-    $react = $request->User()->linkToReactions()->create([
-        'likes' => 1,
-        'dislikes' => 0,  // Remove any dislike by default
-        'notes_id' => $note_id,
-        'user_id' => $request->user()->id,
-    ]);
-
-    return response()->json(['message' => 'Like added successfully', 'likes' => 1, $react]);
-    }
-
-    public function dislikePost(Request $request, $note_id)
     {
         $note = notes::find($note_id);
 
@@ -77,53 +43,118 @@ class ReactionsController extends Controller
 
         // Check if a reaction already exists for this user and note
         $reaction = Reactions::where('notes_id', $note_id)
+                             ->where('user_id', $user_id)
+                             ->first();
+
+        if ($reaction) {
+            // User has not liked or disliked yet
+            if ($reaction->has_liked == false && $reaction->has_disliked == false) {
+                $reaction->has_liked = true;
+                $reaction->save();
+            }
+            // User has already liked the note, remove like
+            elseif ($reaction->has_liked == true && $reaction->has_disliked == false) {
+                $reaction->has_liked = false;
+                $reaction->save();
+            }
+            // User previously disliked the note, change to like
+            elseif ($reaction->has_liked == false && $reaction->has_disliked == true) {
+                $reaction->has_disliked = false;
+                $reaction->has_liked = true;
+                $reaction->save();
+            }
+
+            return response()->json($reaction, 201);
+        } else {
+            // If no reaction exists, create a new one with a like
+            $newReaction = $request->User()->linkToReactions()->create([
+                'has_liked' => true,
+                'has_disliked' => false,
+                'notes_id' => $note_id,
+                'user_id' => $user_id,
+            ]);
+
+            return response()->json($newReaction, 201);
+        }
+    }
+
+    public function dislikePost(Request $request, $note_id)
+{
+    $note = notes::find($note_id);
+
+    if (!$note) {
+        return response()->json(['message' => 'Note not found'], 404);
+    }
+
+    $user_id = $request->user()->id;
+
+    // Check if a reaction already exists for this user and note
+    $reaction = Reactions::where('notes_id', $note_id)
                          ->where('user_id', $user_id)
                          ->first();
 
-        if ($reaction) {
-            if ($reaction->dislikes > 0) {
-                // User already disliked the note, so we don't allow another dislike
-                return response()->json(['message' => 'You have already disliked this note'], 403);
-            } else {
-                // If the user liked the note before, remove the like and add a dislike
-                $reaction->likes = 0;      // Remove the like
-                $reaction->dislikes = 1;   // Add the dislike
-                $reaction->save();
-
-                return response()->json(['message' => 'Like removed and dislike added successfully', 'dislikes' => $reaction->dislikes]);
-            }
+    if ($reaction) {
+        // User has not liked or disliked yet
+        if ($reaction->has_liked == false && $reaction->has_disliked == false) {
+            $reaction->has_disliked = true;
+            $reaction->save();
+        }
+        // User has already disliked the note, remove dislike
+        elseif ($reaction->has_liked == false && $reaction->has_disliked == true) {
+            $reaction->has_disliked = false;
+            $reaction->save();
+        }
+        // User previously liked the note, change to dislike
+        elseif ($reaction->has_liked == true && $reaction->has_disliked == false) {
+            $reaction->has_liked = false;
+            $reaction->has_disliked = true;
+            $reaction->save();
         }
 
+        return response()->json($reaction, 201);
+    } else {
         // If no reaction exists, create a new one with a dislike
-        $react = $request->User()->linkToReactions()->create([
-            'likes' => 1,
-            'dislikes' => 0,  // Remove any dislike by default
+        $newReaction = $request->User()->linkToReactions()->create([
+            'has_liked' => false,
+            'has_disliked' => true,
             'notes_id' => $note_id,
-            'user_id' => $request->user()->id,
+            'user_id' => $user_id,
         ]);
 
-        return response()->json(['message' => 'Dislike added successfully', 'dislikes' => 1, $react]);
+        return response()->json($newReaction, 201);
+        }
     }
 
-    public function resetReactions($note_id)
+    public function getSpecificNote(Request $request, $note_id)
 {
-    // Find the reactions by the note_id passed as a route parameter
-    $reaction = Reactions::where('notes_id', $note_id)->first();
+    // Find the note by ID
+    $note = notes::find($note_id);
+
+    if (!$note) {
+        return response()->json(['message' => 'Note not found'], 404);
+    }
+
+    // Get the authenticated user ID
+    $user_id = $request->user()->id;
+    
+    // Find the reaction of the user for this specific note
+    $reaction = Reactions::where('notes_id', $note_id)
+                         ->where('user_id', $user_id)
+                         ->first();
 
     if ($reaction) {
-        // Reset the likes and dislikes for the note
-        $reaction->likes = 0;
-        $reaction->dislikes = 0;
-        $reaction->save();
-
+        // If the reaction exists, return the has_liked and has_disliked values
         return response()->json([
-            'message' => 'Reactions reset successfully',
-            'likes' => $reaction->likes,
-            'dislikes' => $reaction->dislikes,
-        ]);
+            'has_liked' => $reaction->has_liked,
+            'has_disliked' => $reaction->has_disliked,
+        ], 200);
     } else {
-        // If no reaction is found, return a message
-        return response()->json(['message' => 'No reactions found for this note'], 404);
+        // If no reaction exists, return false for both
+        return response()->json([
+            'has_liked' => false,
+            'has_disliked' => false,
+        ], 200);
     }
 }
+
 }

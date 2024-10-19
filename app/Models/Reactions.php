@@ -10,10 +10,15 @@ class Reactions extends Model
     use HasFactory;
 
     protected $fillable =[
-        'likes',
-        'dislikes',
+        'has_liked',
+        'has_disliked',
         'notes_id',
         'user_id',
+    ];
+
+    protected $casts = [
+        'has_liked' => 'boolean',
+        'has_disliked' => 'boolean',
     ];
 
     public function notes(){

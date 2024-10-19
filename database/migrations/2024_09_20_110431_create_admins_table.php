@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('creator_username');
             $table->string('creator_email')->index();
-            $table->string('contents');
+            $table->text('contents');
             $table->boolean('public');
             $table->boolean('to_public');
         });

@@ -27,29 +27,29 @@ class AuthenticationController extends Controller
                 ],
                 'password' => 'required'
             ]);
-    
+
             // Check if a user already exists with the provided email
             $user = User::where('email', $fields['email'])->first();
-    
+
             // If the user is found, return a conflict (409) error response
             if ($user) {
                 return response()->json([
                     'error' => 'email already exists. Try another email'
                 ], 409);
             }
-    
+
             // If no user exists with the given email, create a new user
             $user = User::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-    
+
             // Send the email verification link
             $user->sendEmailVerificationNotification();
             // Return a success message
             return response()->json(['message' => 'Registered successfully. Please verify your email.'], 201);
-    
+
         } catch (\Exception $e) {
             // Handle any other exceptions
             return response()->json([

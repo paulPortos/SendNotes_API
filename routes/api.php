@@ -58,6 +58,6 @@ Route::post('/sendApproveEmail', [SendNotificationEmail::class, 'sendApprovedNot
 Route::post('/sendDeclineEmail', [SendNotificationEmail::class, 'sendDeclineNotificationEmail']);
 
 Route::get('/showReactions/{note_id}', [ReactionsController::class, 'showReactions']);
-Route::middleware('auth:sanctum')->post('/likePost/{id}', [ReactionsController::class, 'likePost']);
+Route::middleware('auth:sanctum')->get('getSpecificNote/{note_id}', [ReactionsController::class, 'getSpecificNote']);
+Route::middleware('auth:sanctum')->post('/likePost/{note_id}', [ReactionsController::class, 'likePost']);
 Route::middleware('auth:sanctum')->post('/dislikePost/{note_id}', [ReactionsController::class, 'dislikePost']);
-Route::put('/resetReactions/{note_id}', [ReactionsController::class, 'resetReactions']);

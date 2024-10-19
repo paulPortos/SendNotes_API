@@ -17,7 +17,7 @@ class SendNotificationEmail extends Controller
 
         $message = "has been approved to be shared!";
         $admin_message = "Thank you for sharing your knowledge! Your contribution will greatly assist other users in their reviews and studies.";
-
+        
         $details = [
             'email' => $validated['email'],
             'title' => $validated['title'],
@@ -25,9 +25,12 @@ class SendNotificationEmail extends Controller
             'admin_message' => $admin_message
         ];
 
-        Mail::to($details['email'])->send(new NotificationsEmail($details));
-
-        return response()->json(['message' => 'Email sent successfully!'], 201);
+        try {
+            Mail::to($details['email'])->send(new NotificationsEmail($details));
+            return response()->json(['message' => 'Email sent successfully!'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to send email. Invalid email address or server error.'], 500);
+        }
     }
 
     public function sendDeclineNotificationEmail(Request $request)
@@ -47,9 +50,12 @@ class SendNotificationEmail extends Controller
             'admin_message' => $admin_message
         ];
 
-        Mail::to($details['email'])->send(new NotificationsEmail($details));
-
-        return response()->json(['message' => 'Email sent successfully!'], 201);
+        try {
+            Mail::to($details['email'])->send(new NotificationsEmail($details));
+            return response()->json(['message' => 'Email sent successfully!'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to send email. Invalid email address or server error.'], 500);
+        }
     }
 
 }
