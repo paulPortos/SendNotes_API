@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SendNotes;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChangePassword;
 use App\Http\Controllers\AdminController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\NotesController;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\ReactionsController;
+use App\Http\Controllers\SendNotesController;
 use App\Http\Controllers\FlashcardsController;
 use App\Http\Controllers\SendNotificationEmail;
 use App\Http\Controllers\NotificationsController;
@@ -61,3 +63,7 @@ Route::get('/showReactions/{note_id}', [ReactionsController::class, 'showReactio
 Route::middleware('auth:sanctum')->get('getSpecificNote/{note_id}', [ReactionsController::class, 'getSpecificNote']);
 Route::middleware('auth:sanctum')->post('/likePost/{note_id}', [ReactionsController::class, 'likePost']);
 Route::middleware('auth:sanctum')->post('/dislikePost/{note_id}', [ReactionsController::class, 'dislikePost']);
+
+Route::middleware('auth:sanctum')->get('/viewSentNotes', [SendNotesController::class, 'viewSentNotes']);
+Route::middleware('auth:sanctum')->post('/sendNotes', [SendNotesController::class, 'sendNotes']);
+Route::middleware('auth:sanctum')->delete('/deleteSentNote/{sendNotes_id}', [SendNotesController::class, 'deleteSentNotes']);

@@ -81,4 +81,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Reactions::class);
     }
+
+    public function linkToSendNotes()
+    {
+        return $this->hasMany(Reactions::class);
+    }
 }
