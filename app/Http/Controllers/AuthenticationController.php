@@ -23,7 +23,7 @@ class AuthenticationController extends Controller
                 'email' => [
                     'required',
                     'email',
-                    'regex:/^[\w\.-]+@[\w\.-]+\.\w{2,4}$/'
+                  'regex:/^[\w\.-]+@[\w\.-]+\.com$/'
                 ],
                 'password' => 'required'
             ]);
@@ -45,8 +45,8 @@ class AuthenticationController extends Controller
                 'password' => Hash::make($request->password),
             ]);
     
-            // Send the email verification link
-            $user->sendEmailVerificationNotification();
+            // // Send the email verification link
+            // $user->sendEmailVerificationNotification();
             // Return a success message
             return response()->json(['message' => 'Registered successfully. Please verify your email.'], 201);
     
@@ -54,7 +54,7 @@ class AuthenticationController extends Controller
             // Handle any other exceptions
             return response()->json([
                 'error' => 'An error occurred: ' . $e->getMessage()
-            ], 500);
+            ], 401);
         }
     }
 
@@ -119,31 +119,33 @@ class AuthenticationController extends Controller
     public function verify(Request $request, $id, $hash)
     {
         $user = User::findOrFail($id);
-
+        
+        //check if its a valid link or not
         if (!hash_equals($hash, sha1($user->getEmailForVerification()))) {
             return response()->json(['message' => 'Invalid verification link.'], 403);
         }
-
+        //checks if the users email is already verified or not
         if ($user->hasVerifiedEmail()) {
             return response()->json(['message' => 'Email already verified.'], 200);
         }
-
+        //makes the user verified if the mail is linked
         $user->markEmailAsVerified();
 
         return response()->json(['message' => 'Email verified successfully.'], 200);
     }
 
-    public function resend(Request $request)
-    {
-        $user = $request->user();
+    //resends the email 
+    // public function resend(Request $request)
+    // {
+    //     $user = $request->user();
 
-        if ($user->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Email already verified.'], 200);
-        }
+    //     if ($user->hasVerifiedEmail()) {
+    //         return response()->json(['message' => 'Email already verified.'], 200);
+    //     }
 
-        $user->sendEmailVerificationNotification();
+    //     $user->sendEmailVerificationNotification();
 
-        return response()->json(['message' => 'Verification link resent.'], 200);
-    }
+    //     return response()->json(['message' => 'Verification link resent.'], 200);
+    // }
 
 }
