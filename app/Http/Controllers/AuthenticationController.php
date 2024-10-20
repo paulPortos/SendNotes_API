@@ -23,7 +23,7 @@ class AuthenticationController extends Controller
                 'email' => [
                     'required',
                     'email',
-                    'regex:/^[\w\.-]+@[\w\.-]+\.\w{2,4}$/'
+                     'regex:/^[\w\.-]+@[\w\.-]+\.com$/'
                 ],
                 'password' => 'required'
             ]);
