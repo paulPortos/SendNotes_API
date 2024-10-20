@@ -116,4 +116,28 @@ public function getCommentsByNoteId($note_id)
 
     return response()->json(['message' => 'Comment deleted successfully'], 200);
 }
+public function countComments($note_id)
+{
+    // Check if the note exists
+    $note = notes::find($note_id);
+
+    if (!$note) {
+        return response()->json(['error' => 'Note not found'], 404);
+    }
+
+    // Retrieve all comments for the specific note
+    $comments = Comments::where('notes_id', $note_id)->get();
+
+    // Count the number of comments for the note
+    $commentCount = $comments->count();
+
+    // Return the comments along with the count
+    return response()->json([
+        'comments' => $comments,
+        'comment_count' => $commentCount
+    ], 200);
+}
+
+
+
 }
