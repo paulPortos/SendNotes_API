@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\notes;
 use App\Models\SendNotes;
 use Illuminate\Http\Request;
@@ -13,21 +14,30 @@ class SendNotesController extends Controller
     {
         // Get the authenticated user's email
         $userEmail = Auth::user()->email;
+        if ($userEmail){
+            // Fetch the notes from sendnotes where the email matches
+            $sentNotes = SendNotes::where('send_to', $userEmail)->get();
+            // Return the view and pass the sent notes data
+            return response()->json($sentNotes, 200);
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
+        }
 
-        // Fetch the notes from sendnotes where the email matches
-        $sentNotes = SendNotes::where('send_to', $userEmail)->get();
-
-        // Return the view and pass the sent notes data
-        return response()->json($sentNotes, 200);
     }
 
-    public function sendNotes(Request $request){
+    public function sendNotes(Request $request)
+    {
         $field = $request->validate([
             'notes_id' => 'required|exists:notes,id',
             'send_to' => "required|email",
             'sent_by' => 'required|string'
         ]);
+        
+        $sentTo = User::where('email', $field['send_to'])->first();
 
+        if (!$sentTo) {
+            return response()->json(['message' => 'Email not found'], 404);
+        }
         $note = notes::find($field['notes_id']);
 
         $send = SendNotes::create([
@@ -58,6 +68,4 @@ class SendNotesController extends Controller
             return response()->json(['Error message' => $e->getMessage()], 500);
         }
     }
-
-
 }
