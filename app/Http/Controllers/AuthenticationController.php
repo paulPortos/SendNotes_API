@@ -40,7 +40,7 @@ class AuthenticationController extends Controller
             }else if ($uniqueUsername) {
                 return response()->json([
                     'error' => 'username already exists. Try another username'
-                ], 409);
+                ], 410);
             }
 
             // If no user exists with the given email, create a new user
