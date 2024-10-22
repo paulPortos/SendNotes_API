@@ -30,11 +30,16 @@ class AuthenticationController extends Controller
 
             // Check if a user already exists with the provided email
             $user = User::where('email', $fields['email'])->first();
+            $uniqueUsername = User::where('username', $fields['username'])->first();
 
             // If the user is found, return a conflict (409) error response
             if ($user) {
                 return response()->json([
                     'error' => 'email already exists. Try another email'
+                ], 409);
+            }else if ($uniqueUsername) {
+                return response()->json([
+                    'error' => 'username already exists. Try another username'
                 ], 409);
             }
 
