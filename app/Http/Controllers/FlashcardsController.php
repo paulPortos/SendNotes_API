@@ -34,15 +34,6 @@ class FlashcardsController extends Controller implements HasMiddleware
             'public' => 'boolean',
             'to_public' => 'boolean',
         ]);
-        //Checks if the flashcard exist in the database
-        $flashcardExists = Flashcards::where('title', $fields ['title'])->first();
-
-        if($flashcardExists)
-        {
-            return response()->json([
-                'error' => 'title already exist. Try another title'
-            ],409);
-        }
 
         $flashcards = $request->User()->linkToFlashcards()->create($fields);
 
@@ -50,7 +41,7 @@ class FlashcardsController extends Controller implements HasMiddleware
     }
 
     public function show(Request $request, $id)
-{
+    {
     // Get the authenticated user
     $user = $request->user();
 
@@ -72,7 +63,7 @@ class FlashcardsController extends Controller implements HasMiddleware
         'status' => 'Success',
         'card' => $flashcard
     ], 200);
-}
+    }
 
 
     public function update(Request $request, Flashcards $flashcard)

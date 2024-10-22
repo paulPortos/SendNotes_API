@@ -22,7 +22,6 @@ class SendNotesController extends Controller
         } else {
             return response()->json(['message' => 'User not found'], 404);
         }
-
     }
 
     public function sendNotes(Request $request)
@@ -32,12 +31,13 @@ class SendNotesController extends Controller
             'send_to' => "required|email",
             'sent_by' => 'required|string'
         ]);
-        
+
         $sentTo = User::where('email', $field['send_to'])->first();
 
         if (!$sentTo) {
             return response()->json(['message' => 'Email not found'], 404);
         }
+        
         $note = notes::find($field['notes_id']);
 
         $send = SendNotes::create([
