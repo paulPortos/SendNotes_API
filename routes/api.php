@@ -69,3 +69,5 @@ Route::middleware('auth:sanctum')->post('/dislikePost/{note_id}', [ReactionsCont
 Route::middleware('auth:sanctum')->get('/viewSentNotes', [SendNotesController::class, 'viewSentNotes']);
 Route::middleware('auth:sanctum')->post('/sendNotes', [SendNotesController::class, 'sendNotes']);
 Route::middleware('auth:sanctum')->delete('/deleteSentNote/{sendNotes_id}', [SendNotesController::class, 'deleteSentNotes']);
+
+Route::put('/updateAdminChanges/{note_id}', [AdminController::class, 'updateAdminChanges']);

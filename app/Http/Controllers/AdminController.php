@@ -118,4 +118,41 @@ class AdminController extends Controller
 
         return $admin;
     }
+
+    public function updateAdminChanges(Request $request, $note_id)
+    {
+        $fields = $request->validate([
+            'title' => 'required|string|max:255',
+            'contents' => 'required|string',
+            'creator_username' => 'required|string|max:255',
+            'creator_email' => 'required|email',
+        ]);
+
+        $admin = Admin::where('notes_id', $note_id)->first();
+
+        $note = notes::find($note_id);
+        // Check if the admin's notes_id is equal to the note's id
+        if ($admin && $admin->notes_id == $note->id){
+            $admin->update([
+                'title' => $fields['title'],
+                'creator_username' => $fields['creator_username'],
+                'creator_email' => $fields['creator_email'],
+                'contents' => $fields['contents'],
+                'public' => false,
+                'to_public' => true
+            ]);
+            // Return success response
+            return response()->json([
+                'message' => 'Admin record updated successfully.',
+                'admin_id' => $admin->id, // Return the admin id that was updated
+                'updated_admin' => $admin
+            ], 201); // Explicitly set the 201 status code here
+        } else {
+            
+            // If no matching record was found or the ids do not match
+            return response()->json([
+                'message' => 'No matching admin record found for this note.',
+            ], 404);
+        }
+    }
 }
