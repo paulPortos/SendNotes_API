@@ -59,8 +59,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function admins()
     {
-    return $this->hasManyThrough(admin::class, notes::class, 'user_id', 'notes_id');
+        return $this->hasManyThrough(
+            Admin::class,
+            Notes::class,
+            'user_id',    // Foreign key on the notes table (notes.user_id)
+            'notes_id',   // Foreign key on the admin table (admin.notes_id)
+            'id',         // Local key on the user table (users.id)
+            'id'          // Local key on the notes table (notes.id)
+        );
     }
+
 
     public function comment()
     {

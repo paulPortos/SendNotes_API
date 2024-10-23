@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table -> foreignid('user_id')->constrained()->cascadeOnDelete();
+            $table -> foreignid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->text('contents');
             $table->boolean('to_public');

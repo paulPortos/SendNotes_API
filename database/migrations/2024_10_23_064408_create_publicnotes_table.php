@@ -11,18 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('publicnotes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('notes_id')->constrained('notes')->cascadeOnDelete();
             $table->string('title');
-            $table->string('creator_username');
-            $table->string('creator_email')->index();
             $table->text('contents');
-            $table->boolean('public');
-            $table->boolean('to_public');
+            $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete(); // Reference the admin table
             $table->timestamps();
         });
+
     }
 
     /**
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('publicnotes');
     }
 };
