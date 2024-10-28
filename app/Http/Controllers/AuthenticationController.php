@@ -59,7 +59,7 @@ class AuthenticationController extends Controller
             // Handle any other exceptions
             return response()->json([
                 'error' => 'An error occurred: ' . $e->getMessage()
-            ], 500);
+            ], 422 );
         }
     }
 
