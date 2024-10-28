@@ -130,12 +130,12 @@ class AuthenticationController extends Controller
         }
 
         if ($user->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Email already verified.'], 200);
+            return view('alreadyexist__email');
         }
 
         $user->markEmailAsVerified();
 
-        return response()->json(['message' => 'Email verified successfully.'], 200);
+        return view('Successful_email');
     }
 
     public function resend(Request $request)
