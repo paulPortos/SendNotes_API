@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\URL;
 class VerifyEmail extends Notification
 {
     /**
+     * The custom subject for the email.
+     *
+     * @var string|null
+     */
+    public $subject = 'Send notes';
+
+    /**
+     * The custom message for the email.
+     *
+     * @var string|null
+     */
+    public $message = 'email verification';
+
+    /**
      * The callback that should be used to create the verify email URL.
      *
      * @var \Closure|null
@@ -24,6 +38,21 @@ class VerifyEmail extends Notification
      * @var \Closure|null
      */
     public static $toMailCallback;
+
+    /**
+     * Set a custom subject and message for the email.
+     *
+     * @param  string  $subject
+     * @param  string  $message
+     * @return $this
+     */
+    public function withCustomContent($subject, $message)
+    {
+        $this->subject = $subject;
+        $this->message = $message;
+
+        return $this;
+    }
 
     /**
      * Get the notification's channels.
@@ -61,11 +90,14 @@ class VerifyEmail extends Notification
      */
     protected function buildMailMessage($url)
     {
-        return (new MailMessage)
-            ->subject(Lang::get('Verify Email Address'))
-            ->line(Lang::get('Please click the button below to verify your email address.'))
+        $mailMessage = new MailMessage;
+
+        $mailMessage->subject($this->subject)
+            ->line($this->message)
             ->action(Lang::get('Verify Email Address'), $url)
             ->line(Lang::get('If you did not create an account, no further action is required.'));
+
+        return $mailMessage;
     }
 
     /**
@@ -82,7 +114,7 @@ class VerifyEmail extends Notification
 
         return URL::temporarySignedRoute(
             'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', default: 60)),
+            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->getEmailForVerification()),
