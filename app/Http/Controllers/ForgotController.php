@@ -84,6 +84,10 @@ class ForgotController extends Controller
             return response()->json(['message' => 'Wrong OTP, Please try again']);
         }
 
+        // Check if the new password is different from the old one
+        if (Hash::check($validatedData['password'], $user->password)) {
+            return response()->json(['message' => 'New password cannot be the same as the old password'], 400);
+        }
         // Update the user's password
         $user->fill([
             'password' => Hash::make($validatedData['password']),
